@@ -5,7 +5,7 @@ import io
 
 st.set_page_config(layout='wide')
 
-path = "indicadores.csv"
+path = ("https://imunogenetica.famerp.br/dash/ambulatorio_fisioterapia/indicadores.csv")
 df = pd.read_csv(path)
  
 tipo_map = {
