@@ -13,6 +13,7 @@ tipo_map = {
     'reavaliao': 'Reavaliação',
     'alta': 'Alta'
 }
+
 setor_map = {
     'urogenecologia': 'Urogenecologia',
     'musculoesqueletico': 'Muscoluesqueletico',
@@ -20,17 +21,31 @@ setor_map = {
     'neurologia_adulto': 'Neurologia adulto',
     'neuropediatria': 'Neuropediatria'
 }
+
 sexo_map = {
     1: 'Feminino',
     2: 'Masculino'
 }
+
 absorvido_map = {
     1: 'Sim',
     0: 'Não'
 }
+
 membro_map = {
     1: 'Membro superior',
     2: 'Membro inferior'
+}
+
+motivo_alta_map = {
+
+    1:	"Alta por término do programa de reabilitação",
+    2:	"Alta por abandono",
+    3:	"Alta por evasão",
+    4:	"Alta por intercorrência clínica ou social",
+    5:	"Alta a pedido",
+    6:	"Alta óbito",
+    7:	"Alta por falta",
 }
 
 df['sexo'] = df['sexo'].map(sexo_map)
@@ -38,6 +53,7 @@ df['redcap_repeat_instrument'] = df['redcap_repeat_instrument'].map(tipo_map)
 df['redcap_data_access_group'] = df['redcap_data_access_group'].map(setor_map)
 df['paciente_absorvido'] = df['paciente_absorvido'].map(absorvido_map)
 df['membro_avaliado'] = df['membro_avaliado'].map(membro_map)
+df['motivo_alta'] = df['motivo_alta'].map(motivo_alta_map)
 
 tipo = st.sidebar.selectbox('Selecione o tipo', ('Admissão', 'Reavaliação', 'Alta'))
 setores = df['redcap_data_access_group'].dropna().unique()
@@ -68,7 +84,7 @@ col9, col10 = st.columns(2)
 col11, col12 = st.columns(2)
 col13, col14 = st.columns(2)
 col15, col16 = st.columns(2)
-
+col17, col18 = st.columns(2)
 
 if not df_filtrado.empty:
     if tipo == 'Admissão':
@@ -214,6 +230,16 @@ if not df_filtrado.empty:
                 fig_forca_mi_final = px.bar(forca_mi_final, x='Força membro inferior final', y='Quantidade', color='Força')
                 st.plotly_chart(fig_forca_mi_final, use_container_width=True)
         
+    if tipo == 'Alta':
+        motivo_alta = df_filtrado['motivo_alta'].value_counts().reset_index()
+        motivo_alta.columns = ['Motivo alta', 'Quantidade']
+
+        if not motivo_alta.empty:
+            with col17:
+                st.write("#### Motivo da alta")
+                fig_motivo_alta = px.bar(motivo_alta, x='Motivo alta', y='Quantidade', color='Motivo alta')
+                st.plotly_chart(fig_motivo_alta, use_container_width=True)
+
 else:
     st.warning("Nenhum registro encontrado para os filtros selecionados.")
 
