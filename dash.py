@@ -8,8 +8,8 @@ st.set_page_config(layout='wide')
 # -----------------------------
 # CARREGAR DADOS
 # -----------------------------
-#path = "https://imunogenetica.famerp.br/dash/ambulatorio_fisioterapia/indicadores.csv"
-path = "indicadores.csv"
+path = "https://imunogenetica.famerp.br/dash/ambulatorio_fisioterapia/indicadores.csv"
+#path = "indicadores.csv"
 df = pd.read_csv(path)
 
 # -----------------------------
